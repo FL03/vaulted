@@ -1,0 +1,8 @@
+**/.idea/
+**/.vscode/
+
+**/debug/
+**/target/
+
+**/*.lock
+**/*.rs.bk

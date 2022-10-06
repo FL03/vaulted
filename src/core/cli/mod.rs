@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 mod args;
 mod cmds;
 
-#[derive(Clone, Debug, Deserialize, Hash, Parser, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Parser, PartialEq, Serialize)]
 #[clap(about, author, version)]
 #[clap(long_about = "Welcome to Conduit")]
 pub struct CommandLineInterface {

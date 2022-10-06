@@ -7,7 +7,7 @@
 use clap::Subcommand;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize, Subcommand)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Subcommand)]
 pub enum Commands {
     Application {
         #[clap(long, short, value_parser)]

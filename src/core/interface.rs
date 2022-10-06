@@ -11,25 +11,29 @@ use std::str::FromStr;
 use strum::{EnumString, EnumVariantNames};
 
 #[derive(
-    Clone, Copy, Debug, Hash, PartialEq, EnumString, EnumVariantNames, Deserialize, Serialize,
+    Clone, Copy, Debug, Default, Deserialize, EnumString, EnumVariantNames, Eq, Hash, PartialEq, Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum Stage {
     Startup,
     Shutdown,
+    #[default]
+    Running,
 }
 
 #[derive(
-    Clone, Copy, Debug, Hash, PartialEq, EnumString, EnumVariantNames, Deserialize, Serialize,
+    Clone, Copy, Debug, Default, Deserialize, EnumString, EnumVariantNames, Eq, Hash, PartialEq, Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum State {
+    #[default]
+    Idle,
     Off,
     On,
     Processing,
 }
 
-#[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Hash, Eq, PartialEq, Serialize)]
 pub struct Interface {
     pub state: State,
 }
@@ -41,8 +45,14 @@ impl Interface {
     pub fn cli(&mut self) -> BoxResult<&Self> {
         self.state = State::from_str("processing").ok().unwrap();
         let data = CommandLineInterface::data();
-        println!("Processing inputs...");
+        println!("Processing inputs...\n{:?}", data);
 
         Ok(self)
+    }
+}
+
+impl Default for Interface {
+    fn default() -> Self {
+        Self::new()
     }
 }

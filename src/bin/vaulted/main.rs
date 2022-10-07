@@ -10,7 +10,7 @@ pub mod app;
 #[tokio::main]
 async fn main() -> BoxResult {
     let mut app = app::App::default();
-    app.run().await.expect("Failed to run the application...");
+    // app.run().await.expect("Failed to run the application...");
     let arch = Archive::from(".artifacts/tmp");
 
     println!("{:?}", arch.setup());
@@ -27,10 +27,6 @@ pub fn read_dir_or(path: &str) -> std::fs::ReadDir {
         }
     }
 }
-pub struct Backend {
-    
-    workdir: String
-}
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct Archive {
@@ -44,17 +40,8 @@ impl Archive {
 
         Self { dir, data }
     }
-    pub fn directory(&self) -> std::fs::ReadDir {
-        std::fs::read_dir(self.dir.clone()).expect("")
-    }
     pub fn setup(&self) -> &Self {
-        let reader = match std::fs::read_dir(self.dir.clone()) {
-            Ok(v) => v,
-            Err(_) => {
-                std::fs::create_dir_all(self.dir.clone()).expect("");
-                std::fs::read_dir(self.dir.clone()).expect("")
-            }
-        };
+        let reader = read_dir_or(self.dir.as_str());
         println!("{:?}", reader);
         self
     }

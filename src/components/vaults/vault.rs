@@ -24,7 +24,7 @@ impl Vault {
 
 impl Default for Vault {
     fn default() -> Self {
-        Self::new(VaultAccess::default(), crate::TMP_DIR.to_string(), VaultMetadata::default())
+        Self::new(VaultAccess::default(), crate::TMP_DIR.to_string(), Vec::new())
     }
 }
 

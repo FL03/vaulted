@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  app:
+    build: 
+      context: ..
+      dockerfile: Dockerfile
+    container_name: vaulted
+    volumes:
+      - "../.config:/config"
+      - "/data:/data"
+
+  cache:
+    container_name: cache-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+volumes:
+  config:
+  data:

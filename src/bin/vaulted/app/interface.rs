@@ -4,11 +4,8 @@
     Description:
         ... Summary ...
 */
-use crate::cli::{CommandLineInterface, Commands};
-use scsys::core::BoxResult;
+use super::{cli::{CommandLineInterface, cmds::Commands}, states::State};
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
-use strum::{EnumString, EnumVariantNames};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct App {
@@ -19,26 +16,15 @@ impl App {
     pub fn new(state: State) -> Self {
         Self { state }
     }
-    fn cli(&self) -> CommandLineInterface {
-        let data = CommandLineInterface::data();
-        let cmd = data.clone().command;
-        if cmd.is_some() {
-            let cmd =cmd.unwrap();
-            match cmd {
-                Commands::Application { mode } => {
-                    println!("{:?}", mode);
-                },
-            }
-
-        }
-
-        data
+    async fn cli(&self) -> BoxResult<&CommandLineInterface> {
+        let cli = CommandLineInterface::new();
+        cli.handler()
     }
     pub async fn run(&mut self) -> BoxResult<&Self> {
         self.set_state("complete");
         println!("{:?}", self.state);
 
-        let cli = self.cli();
+        let cli = self.cli().await;
 
         Ok(self)
     }
@@ -61,19 +47,3 @@ impl Default for App {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, PartialEq, Serialize)]
-#[strum(serialize_all = "snake_case")]
-pub enum State {
-    Awaiting,
-    Complete,
-    Compute,
-    Idle,
-    Processing,
-    Request { header: serde_json::Value },
-}
-
-impl Default for State {
-    fn default() -> Self {
-        Self::Idle
-    }
-}

@@ -5,7 +5,8 @@
         ... Summary ...
 */
 use scsys::core::BoxResult;
-use vaulted::App;
+pub mod cli;
+pub mod app;
 
 #[tokio::main]
 async fn main() -> BoxResult {

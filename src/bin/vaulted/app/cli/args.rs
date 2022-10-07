@@ -24,7 +24,7 @@ use strum::{EnumString, EnumVariantNames};
     Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
-pub enum PowerArgs {
+pub enum Runtime {    
     On,
     Off,
     #[default]

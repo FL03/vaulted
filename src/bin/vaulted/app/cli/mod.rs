@@ -1,18 +1,15 @@
 /*
-    Appellation: mod <module>
+    Appellation: cli <module>
     Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
     Description:
         ... Summary ...
 */
-pub use self::{
-    args::{CRUDArgs, PowerArgs},
-    cmds::Commands,
-};
+
 use clap::Parser;
 use serde::{Deserialize, Serialize};
 
-mod args;
-mod cmds;
+pub mod args;
+pub mod cmds;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Parser, PartialEq, Serialize)]
 #[clap(about, author, version)]
@@ -23,7 +20,12 @@ pub struct CommandLineInterface {
 }
 
 impl CommandLineInterface {
-    pub fn data() -> Self {
+    pub fn new() -> Self {
         Self::parse()
+    }
+    pub fn handler(&self) -> scsys::core::BoxResult<&Self> {
+        let cmd = self.command.clone();
+        
+        Ok(self)
     }
 }

@@ -1,0 +1,6 @@
+[application]
+name = "Vaulted"
+slug = "vaulted"
+
+[[application.directories]]
+tmp = "/tmp/"

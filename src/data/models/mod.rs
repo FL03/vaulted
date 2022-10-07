@@ -6,4 +6,9 @@
 */
 pub use self::credentials::{Credential, CredentialMetadata, CredentialSpec};
 
+mod accounts;
 mod credentials;
+
+pub trait SecureModel {
+    fn timestamp(&self);
+}

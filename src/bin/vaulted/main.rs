@@ -4,57 +4,75 @@
     Description:
         ... Summary ...
 */
-use scsys::core::BoxResult;
+use vaulted::create_json_file;
 pub mod app;
 
 #[tokio::main]
-async fn main() -> BoxResult {
+async fn main() -> scsys::core::BoxResult {
     let mut app = app::App::default();
     // app.run().await.expect("Failed to run the application...");
-    let arch = Archive::from(".artifacts/tmp");
+    let data = serde_json::json!({"homepage": "https://pzzld.eth"});
+    let arch = archive::Archive::from("/tmp/vault");
 
-    println!("{:?}", arch.setup());
+    arch.setup().contents()?;
+    arch.save(Some("test"))?;
+    arch.contents()?;
 
     Ok(())
 }
 
-pub fn read_dir_or(path: &str) -> std::fs::ReadDir {
-    match std::fs::read_dir(path) {
-        Ok(v) => v,
-        Err(_) => {
-            std::fs::create_dir_all(path).expect("");
-            std::fs::read_dir(path).expect("")
+pub(crate) mod archive {
+    use scsys::core::BoxResult;
+    use serde::{Deserialize, Serialize};
+    use serde_json::Value;
+    use vaulted::{create_json_file, read_dir_or, read_files_in_dir, read_json_file};
+
+
+    #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    pub struct Archive {
+        pub dir: String,
+        pub data: Value,
+    }
+
+    impl Archive {
+        pub fn new(dir: String) -> Self {
+            let data = Value::default();
+
+            Self { dir, data }
+        }
+        pub fn save(&self, save_as: Option<&str>) -> std::io::Result<&Self> {
+            let fname = match save_as {
+                Some(v) => v,
+                None => "vault"
+            };
+            let path = format!("{}/{}.json", self.dir, fname);
+            create_json_file(path.as_str(), self.data.clone())?;
+            Ok(self)
+        }
+        pub fn setup(&self) -> &Self {
+            let reader = read_dir_or(self.dir.as_str());
+            println!("{:?}", reader);
+            self
+        }
+        pub fn contents(&self) -> BoxResult<&Self> {
+            let res = read_files_in_dir(self.dir.as_str())?;
+            println!("{:?}", res);
+            Ok(self)
         }
     }
-}
 
-#[derive(Clone, Debug, Hash, Eq, PartialEq)]
-pub struct Archive {
-    pub dir: String,
-    pub data: Option<Vec<String>>,
-}
-
-impl Archive {
-    pub fn new(dir: String) -> Self {
-        let data = Some(Vec::new());
-
-        Self { dir, data }
+    impl std::convert::From<&str> for Archive {
+        fn from(dir: &str) -> Self {
+            Self::new(dir.to_string())
+        }
     }
-    pub fn setup(&self) -> &Self {
-        let reader = read_dir_or(self.dir.as_str());
-        println!("{:?}", reader);
-        self
-    }
-}
 
-impl std::convert::From<&str> for Archive {
-    fn from(dir: &str) -> Self {
-        Self::new(dir.to_string())
+    impl Default for Archive {
+        fn default() -> Self {
+            Self::from("/tmp/credentials")
+        }
     }
-}
-
-impl Default for Archive {
-    fn default() -> Self {
-        Self::from("/tmp/credentials")
+    pub(crate) mod utils {
+        
     }
 }

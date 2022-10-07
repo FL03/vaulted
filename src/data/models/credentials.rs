@@ -21,6 +21,6 @@ pub struct Credential {
 pub trait CredentialSpec {
     fn credential(&self) -> &Self;
     fn message(&self) -> String;
-    fn metadata(&self) -> std::collections::HashMap<String, String>;
-    fn timestamp(&self) -> scsys::core::Timestamp;
+    fn metadata(&self) -> Vec<Value>;
+    fn timestamp(&self) -> Timestamp;
 }

@@ -16,6 +16,6 @@ RUN yum update -y && yum upgrade -y
 
 FROM app-base as latest
 
-COPY --from=builder /project/target/release/conduit /conduit
+COPY --from=builder /project/target/release/vaulted /bin/vaulted
 
-CMD ["conduit"]
+CMD ["vaulted"]

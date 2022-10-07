@@ -16,7 +16,8 @@ pub mod cmds;
 #[clap(long_about = "Welcome to Conduit")]
 pub struct CommandLineInterface {
     #[clap(subcommand)]
-    pub command: Option<Commands>,
+    pub command: Option<cmds::Commands>,
+
 }
 
 impl CommandLineInterface {
@@ -25,6 +26,11 @@ impl CommandLineInterface {
     }
     pub fn handler(&self) -> scsys::core::BoxResult<&Self> {
         let cmd = self.command.clone();
+        if self.command.is_some() {
+            let cmd = cmd.unwrap().clone();
+            cmd.handler().expect("Failed to parse...");
+
+        }
         
         Ok(self)
     }

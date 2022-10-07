@@ -11,12 +11,14 @@ use strum::{EnumString, EnumVariantNames};
 #[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, PartialEq, Serialize)]
 #[strum(serialize_all = "snake_case")]
 pub enum State {
+    Request {
+        data: serde_json::Value
+    },
     Idle,
-    
 }
 
 impl Default for State {
     fn default() -> Self {
-        Self::Idel
+        Self::Idle
     }
 }

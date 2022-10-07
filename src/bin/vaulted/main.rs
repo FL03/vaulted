@@ -5,18 +5,31 @@
         ... Summary ...
 */
 use scsys::core::BoxResult;
-pub mod cli;
 pub mod app;
 
 #[tokio::main]
 async fn main() -> BoxResult {
-    let mut app = App::default();
+    let mut app = app::App::default();
     app.run().await.expect("Failed to run the application...");
     let arch = Archive::from(".artifacts/tmp");
 
     println!("{:?}", arch.setup());
 
     Ok(())
+}
+
+pub fn read_dir_or(path: &str) -> std::fs::ReadDir {
+    match std::fs::read_dir(path) {
+        Ok(v) => v,
+        Err(_) => {
+            std::fs::create_dir_all(path).expect("");
+            std::fs::read_dir(path).expect("")
+        }
+    }
+}
+pub struct Backend {
+    
+    workdir: String
 }
 
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
@@ -30,6 +43,9 @@ impl Archive {
         let data = Some(Vec::new());
 
         Self { dir, data }
+    }
+    pub fn directory(&self) -> std::fs::ReadDir {
+        std::fs::read_dir(self.dir.clone()).expect("")
     }
     pub fn setup(&self) -> &Self {
         let reader = match std::fs::read_dir(self.dir.clone()) {

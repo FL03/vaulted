@@ -5,6 +5,7 @@
         ... Summary ...
 */
 use super::{cli::{CommandLineInterface, cmds::Commands}, states::State};
+use scsys::core::BoxResult;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -16,15 +17,15 @@ impl App {
     pub fn new(state: State) -> Self {
         Self { state }
     }
-    async fn cli(&self) -> BoxResult<&CommandLineInterface> {
-        let cli = CommandLineInterface::new();
-        cli.handler()
+    async fn cli(&self) -> &Self {
+        CommandLineInterface::new().handler().expect("Failed to run the cli...");
+        self
     }
     pub async fn run(&mut self) -> BoxResult<&Self> {
         self.set_state("complete");
         println!("{:?}", self.state);
 
-        let cli = self.cli().await;
+        self.cli().await;
 
         Ok(self)
     }

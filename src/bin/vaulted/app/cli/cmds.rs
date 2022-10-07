@@ -24,16 +24,16 @@ pub enum Commands {
 }
 
 impl Commands {
-    pub fn handler(&self) -> &Self {
+    pub fn handler(&self) -> BoxResult<&Self> {
         match self {
             Self::App { mode } => {
                 
-
             },
             Self::Vault { action, identifier } => {
 
             }
-        }
+        };
+        Ok(self)
     }
     
 }

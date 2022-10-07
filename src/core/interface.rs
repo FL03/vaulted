@@ -4,55 +4,76 @@
     Description:
         ... Summary ...
 */
-use crate::cli::CommandLineInterface;
+use crate::cli::{CommandLineInterface, Commands};
 use scsys::core::BoxResult;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use strum::{EnumString, EnumVariantNames};
 
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, EnumString, EnumVariantNames, Eq, Hash, PartialEq, Serialize,
-)]
-#[strum(serialize_all = "snake_case")]
-pub enum Stage {
-    Startup,
-    Shutdown,
-    #[default]
-    Running,
-}
-
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, EnumString, EnumVariantNames, Eq, Hash, PartialEq, Serialize,
-)]
-#[strum(serialize_all = "snake_case")]
-pub enum State {
-    #[default]
-    Idle,
-    Off,
-    On,
-    Processing,
-}
-
-#[derive(Clone, Debug, Deserialize, Hash, Eq, PartialEq, Serialize)]
-pub struct Interface {
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct App {
     pub state: State,
 }
 
-impl Interface {
-    pub fn new() -> Self {
-        Self { state: State::On }
+impl App {
+    pub fn new(state: State) -> Self {
+        Self { state }
     }
-    pub fn cli(&mut self) -> BoxResult<&Self> {
-        self.state = State::from_str("processing").ok().unwrap();
+    fn cli(&self) -> CommandLineInterface {
         let data = CommandLineInterface::data();
-        println!("Processing inputs...\n{:?}", data);
+        let cmd = data.clone().command;
+        if cmd.is_some() {
+            let cmd =cmd.unwrap();
+            match cmd {
+                Commands::Application { mode } => {
+                    println!("{:?}", mode);
+                },
+            }
+
+        }
+
+        data
+    }
+    pub async fn run(&mut self) -> BoxResult<&Self> {
+        self.set_state("complete");
+        println!("{:?}", self.state);
+
+        let cli = self.cli();
 
         Ok(self)
     }
+    pub fn set_state(&mut self, state: &str) -> &Self {
+        let s = match State::try_from(state) {
+            Ok(v) => v,
+            Err(_) => self.state.clone(),
+        };
+        self.state = s;
+        self
+    }
+    pub fn state(&self) -> &State {
+        &self.state
+    }
 }
 
-impl Default for Interface {
+impl Default for App {
     fn default() -> Self {
-        Self::new()
+        Self::new(State::default())
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, PartialEq, Serialize)]
+#[strum(serialize_all = "snake_case")]
+pub enum State {
+    Awaiting,
+    Complete,
+    Compute,
+    Idle,
+    Processing,
+    Request { header: serde_json::Value },
+}
+
+impl Default for State {
+    fn default() -> Self {
+        Self::Idle
     }
 }

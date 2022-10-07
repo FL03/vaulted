@@ -12,6 +12,13 @@ readme = "README.md"
 repository = "https://gitlab.com/FL03/vaulted"
 version = "0.1.8"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[test]]
+name = "vaults"
+path = "tests/core/vaults.rs"
+
 [build-dependencies]
 
 [dependencies]

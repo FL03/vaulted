@@ -5,7 +5,7 @@
         ... Summary ...
 */
 pub use self::{
-    interface::Interface,
+    interface::App,
     primitives::{constants::*, types::*},
 };
 

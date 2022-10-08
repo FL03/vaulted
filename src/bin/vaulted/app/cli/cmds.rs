@@ -30,7 +30,13 @@ impl Commands {
                 
             },
             Self::Vault { action, identifier } => {
-
+                let action = match action.clone() {
+                    CRUDArgs::Create => {
+                    }
+                    CRUDArgs::Read => {},
+                    CRUDArgs::Update => {},
+                    CRUDArgs::Delete => {},
+                };
             }
         };
         Ok(self)

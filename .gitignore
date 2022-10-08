@@ -11,12 +11,14 @@
 
 **/.DS_STORE/
 **/.artifacts/data/
+**/.artifacts/tmp/
 **/.docker/data/
 **/.idea/
 **/.pytest_cache/
 **/.svelte-kit/
 **/.vscode/
 
+**/artifacts/
 **/build/
 **/debug/
 **/dist/

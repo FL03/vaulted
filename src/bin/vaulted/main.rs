@@ -4,16 +4,15 @@
     Description:
         ... Summary ...
 */
-use vaulted::create_json_file;
 pub mod app;
 
 #[tokio::main]
 async fn main() -> scsys::core::BoxResult {
     let mut app = app::App::default();
-    // app.run().await.expect("Failed to run the application...");
-    let data = serde_json::json!({"homepage": "https://pzzld.eth"});
-    let arch = archive::Archive::from("/tmp/vault");
-
+    app.run().await.expect("Failed to run the application...");
+    let data = serde_json::json!(vaulted::models::Account::from_str("https://pzzld.eth.limo", "pzzld"));
+    let mut arch = archive::Archive::from(".artifacts/tmp/creds");
+    arch.data = data;
     arch.setup().contents()?;
     arch.save(Some("test"))?;
     arch.contents()?;

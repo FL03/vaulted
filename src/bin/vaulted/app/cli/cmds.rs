@@ -6,7 +6,7 @@
 */
 use super::args::CRUDArgs;
 use clap::Subcommand;
-use scsys::core::BoxResult;
+use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Subcommand)]
@@ -19,29 +19,25 @@ pub enum Commands {
         #[clap(value_enum)]
         action: CRUDArgs,
         #[clap(long, short, value_parser)]
-        identifier: String
-    }
+        identifier: String,
+    },
 }
 
 impl Commands {
     pub fn handler(&self) -> BoxResult<&Self> {
         match self {
-            Self::App { mode } => {
-                
-            },
+            Self::App { mode } => {}
             Self::Vault { action, identifier } => {
                 let action = match action.clone() {
-                    CRUDArgs::Create => {
-                    }
-                    CRUDArgs::Read => {},
-                    CRUDArgs::Update => {},
-                    CRUDArgs::Delete => {},
+                    CRUDArgs::Create => {}
+                    CRUDArgs::Read => {}
+                    CRUDArgs::Update => {}
+                    CRUDArgs::Delete => {}
                 };
             }
         };
         Ok(self)
     }
-    
 }
 
 pub fn app_mode_handler(mode: String) -> BoxResult {

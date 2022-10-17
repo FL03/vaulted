@@ -8,14 +8,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub enum VaultAccess {
-    ApiKey {
-        api_key: String,
-    },
+    ApiKey { api_key: String },
     None,
-    Std {
-        username: String,
-        password: String
-    }
+    Std { username: String, password: String },
 }
 
 impl Default for VaultAccess {

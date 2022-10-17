@@ -4,8 +4,11 @@
     Description:
         ... Summary ...
 */
-use super::{cli::{CommandLineInterface, cmds::Commands}, states::State};
-use scsys::core::BoxResult;
+use super::{
+    cli::{cmds::Commands, CommandLineInterface},
+    states::State,
+};
+use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -18,13 +21,17 @@ impl App {
         Self { state }
     }
     async fn cli(&self) -> &Self {
-        CommandLineInterface::new().handler().expect("Failed to run the cli...");
+        CommandLineInterface::new()
+            .handler()
+            .expect("Failed to run the cli...");
+        self
+    }
+    pub fn with_logging(&self) -> &Self {
+        tracing_subscriber::fmt::init();
         self
     }
     pub async fn run(&mut self) -> BoxResult<&Self> {
         self.set_state("complete");
-        println!("{:?}", self.state);
-
         self.cli().await;
 
         Ok(self)
@@ -35,6 +42,7 @@ impl App {
             Err(_) => self.state.clone(),
         };
         self.state = s;
+        tracing::info!("{:?}", self.state);
         self
     }
     pub fn state(&self) -> &State {
@@ -47,4 +55,3 @@ impl Default for App {
         Self::new(State::default())
     }
 }
-

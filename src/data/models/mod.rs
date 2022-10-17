@@ -4,7 +4,10 @@
     Description:
         ... Summary ...
 */
-pub use self::{accounts::{Account, AccountMetadata}, credentials::{Credential, CredentialMetadata, CredentialSpec}};
+pub use self::{
+    accounts::{Account, AccountMetadata},
+    credentials::{Credential, CredentialMetadata, CredentialSpec},
+};
 
 mod accounts;
 mod credentials;

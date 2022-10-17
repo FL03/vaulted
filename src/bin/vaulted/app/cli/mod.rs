@@ -17,21 +17,19 @@ pub mod cmds;
 pub struct CommandLineInterface {
     #[clap(subcommand)]
     pub command: Option<cmds::Commands>,
-
 }
 
 impl CommandLineInterface {
     pub fn new() -> Self {
         Self::parse()
     }
-    pub fn handler(&self) -> scsys::core::BoxResult<&Self> {
+    pub fn handler(&self) -> scsys::BoxResult<&Self> {
         let cmd = self.command.clone();
         if self.command.is_some() {
             let cmd = cmd.unwrap().clone();
             cmd.handler().expect("Failed to parse...");
-
         }
-        
+
         Ok(self)
     }
 }

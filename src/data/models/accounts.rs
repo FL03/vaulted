@@ -4,7 +4,7 @@
     Description:
         ... Summary ...
 */
-use scsys::{core::Timestamp, prelude::bson::oid::ObjectId};
+use scsys::{prelude::bson::oid::ObjectId, Timestamp};
 use serde::{Deserialize, Serialize};
 
 pub trait AccountSpec {
@@ -28,7 +28,7 @@ pub struct Account {
     pub homepage: String,
     pub name: String,
     pub slug: String,
-    pub data: Vec<AccountMetadata>
+    pub data: Vec<AccountMetadata>,
 }
 
 impl Account {
@@ -36,7 +36,13 @@ impl Account {
         let id = ObjectId::new();
         let slug = name.to_lowercase();
         let data = Vec::new();
-        Self { id, homepage, name, slug, data }
+        Self {
+            id,
+            homepage,
+            name,
+            slug,
+            data,
+        }
     }
     pub fn from_str(homepage: &str, name: &str) -> Self {
         Self::new(homepage.to_string(), name.to_string())
@@ -64,7 +70,6 @@ impl AccountSpec for Account {
     }
 }
 
-
 impl Default for Account {
     fn default() -> Self {
         Self::new(String::new(), String::new())
@@ -76,7 +81,7 @@ pub enum AccountMetadata {
     Empty,
     Tokens {
         key: Option<String>,
-        passphrase: Option<String>
+        passphrase: Option<String>,
     },
 }
 

@@ -4,7 +4,10 @@
     Description:
         ... Summary ...
 */
-pub use self::{access::VaultAccess, vault::{Vault, VaultMetadata}};
+pub use self::{
+    access::VaultAccess,
+    vault::{Vault, VaultMetadata},
+};
 
 mod access;
 mod vault;

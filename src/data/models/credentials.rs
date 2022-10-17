@@ -4,18 +4,18 @@
     Description:
         ... Summary ...
 */
-use scsys::{core::Timestamp, prelude::bson::oid::ObjectId};
+use scsys::{prelude::bson::oid::ObjectId, Timestamp};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum CredentialMetadata {
-    Tokens(Vec<Value>)
+    Tokens(Vec<Value>),
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Credential {
-    pub id: ObjectId
+    pub id: ObjectId,
 }
 
 pub trait CredentialSpec {

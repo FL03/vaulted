@@ -5,10 +5,13 @@
         ... Summary ...
 */
 use serde_json::Value;
-use std::{fs::{ReadDir, create_dir_all, read_dir, read_to_string}, path::PathBuf};
+use std::{
+    fs::{create_dir_all, read_dir, read_to_string, ReadDir},
+    path::PathBuf,
+};
 
 pub fn create_json_file(path: &str, data: Value) -> std::io::Result<()> {
-    std::fs::write(path,serde_json::to_string_pretty(&data).unwrap())
+    std::fs::write(path, serde_json::to_string_pretty(&data).unwrap())
 }
 
 pub fn read_dir_or(path: &str) -> ReadDir {

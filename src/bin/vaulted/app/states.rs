@@ -5,15 +5,12 @@
         ... Summary ...
 */
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 use strum::{EnumString, EnumVariantNames};
 
 #[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, PartialEq, Serialize)]
 #[strum(serialize_all = "snake_case")]
 pub enum State {
-    Request {
-        data: serde_json::Value
-    },
+    Request { data: serde_json::Value },
     Idle,
 }
 

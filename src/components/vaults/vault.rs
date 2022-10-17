@@ -5,47 +5,65 @@
         ... Summary ...
 */
 use super::VaultAccess;
-use scsys::{core::Timestamp, prelude::bson::oid::ObjectId};
-use serde::{Deserialize, Serialize};
+use crate::models::Credential;
 
+use scsys::{prelude::bson::oid::ObjectId, Timestamp};
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Vault {
     access: VaultAccess,
     workdir: String,
-    data: Vec<VaultMetadata>
+    data: Vec<VaultMetadata>,
 }
 
 impl Vault {
     pub fn new(access: VaultAccess, workdir: String, data: Vec<VaultMetadata>) -> Self {
-        Self { access, workdir, data }
+        Self {
+            access,
+            workdir,
+            data,
+        }
     }
 }
 
 impl Default for Vault {
     fn default() -> Self {
-        Self::new(VaultAccess::default(), crate::TMP_DIR.to_string(), Vec::new())
+        Self::new(
+            VaultAccess::default(),
+            crate::TMP_DIR.to_string(),
+            Vec::new(),
+        )
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct VaultMetadata {
     pub id: ObjectId,
-    pub accessed: Timestamp,
-    pub created: Timestamp
+    pub credentials: Option<Vec<Credential>>,
+    pub data: Vec<Self>,
+    pub homepage: Option<String>,
+    pub links: Option<Vec<String>>,
+
+    pub timestamps: Vec<Timestamp>,
 }
 
 impl VaultMetadata {
-    pub fn new() -> Self {
-        let accessed = Timestamp::default();
-        let created = Timestamp::default();
+    pub fn new(
+        credentials: Option<Vec<Credential>>,
+        data: Vec<Self>,
+        homepage: Option<String>,
+        links: Option<Vec<String>>,
+    ) -> Self {
         let id = ObjectId::new();
-        Self { accessed, created, id }
-    }
-}
-
-impl Default for VaultMetadata {
-    fn default() -> Self {
-        Self::new()
+        let timestamps = vec![Timestamp::default()];
+        Self {
+            id,
+            credentials,
+            data,
+            homepage,
+            links,
+            timestamps,
+        }
     }
 }

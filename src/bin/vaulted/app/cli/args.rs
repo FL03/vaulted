@@ -6,7 +6,6 @@
 */
 use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 use strum::{EnumString, EnumVariantNames};
 
 #[derive(
@@ -24,7 +23,7 @@ use strum::{EnumString, EnumVariantNames};
     Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
-pub enum Runtime {    
+pub enum Runtime {
     On,
     Off,
     #[default]

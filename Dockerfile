@@ -18,4 +18,4 @@ FROM app-base as latest
 
 COPY --from=builder /project/target/release/vaulted /bin/vaulted
 
-CMD ["vaulted"]
+ENTRYPOINT ["vaulted"]

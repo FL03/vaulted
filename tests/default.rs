@@ -1,7 +1,6 @@
 #[cfg(test)]
 
 mod tests {
-    use argon2::{Argon2, PasswordVerifier};
     use vaulted::passwords::{Password, validate_password};
 
     #[test]

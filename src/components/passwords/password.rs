@@ -31,9 +31,13 @@ impl Password {
     pub fn salt(&self) -> SaltString {
         SaltString::generate(&mut OsRng)
     }
-    
 }
 
+impl std::fmt::Display for Password {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]

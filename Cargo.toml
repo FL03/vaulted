@@ -14,14 +14,12 @@ version = "0.1.8"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-
-[[test]]
-name = "vaults"
-path = "tests/core/vaults.rs"
+test = true
 
 [build-dependencies]
 
 [dependencies]
+argon2 = "0.4.1"
 clap = { features = ["derive"], version = "4.0.10" }
 log = "0.4.17"
 provider-archive = "0.6.0"

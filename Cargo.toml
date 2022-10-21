@@ -32,3 +32,27 @@ tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 
 [dev-dependencies]
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+
+[profile.dev]
+codegen-units = 256
+debug = true
+debug-assertions = true
+incremental = true
+lto = false
+panic = "unwind"
+rpath = false
+opt-level = 0
+
+[profile.release]
+codegen-units = 16
+debug = false
+debug-assertions = false
+incremental = false
+lto = false
+panic = "unwind"
+rpath = false
+opt-level = "z"

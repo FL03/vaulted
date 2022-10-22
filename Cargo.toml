@@ -22,6 +22,7 @@ test = true
 argon2 = "0.4.1"
 clap = { features = ["derive"], version = "4.0.10" }
 log = "0.4.17"
+lru = "0.8.1"
 provider-archive = "0.6.0"
 scsys = { features = ["full"], version = "0.1.21" }
 serde = { features = ["derive"], version = "1.0.145" }

@@ -12,8 +12,10 @@ pub(crate) mod settings;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> scsys::BoxResult {
+    println!("{:?}",  std::env::current_dir());
+    println!("{:?}",  std::env::temp_dir());
     let mut app = App::default();
-    app.with_logging();
+    app.setup(None);
     app.run().await?;
 
     Ok(())
@@ -36,18 +38,26 @@ pub(crate) mod interface {
         pub fn new(state: State) -> Self {
             Self { state }
         }
+        pub fn setup(&self, tmp: Option<&str>) -> &Self {
+            tracing_subscriber::fmt::init();
+
+            let mut tmp = match tmp {
+                Some(v) => std::path::PathBuf::from(v),
+                None => std::env::temp_dir()
+            };
+            tracing::info!("{:?}", tmp);
+            tmp.push("vaulted");
+
+            std::fs::create_dir_all(tmp).expect("");
+            self
+        }
         async fn cli(&self) -> &Self {
             CommandLineInterface::new()
                 .handler()
                 .expect("Failed to run the cli...");
             self
         }
-        pub fn with_logging(&self) -> &Self {
-            tracing_subscriber::fmt::init();
-            self
-        }
-        pub async fn run(&mut self) -> BoxResult<&Self> {
-            self.set_state("complete");
+        pub async fn run(&self) -> BoxResult<&Self> {
             self.cli().await;
 
             Ok(self)

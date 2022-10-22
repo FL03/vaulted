@@ -12,11 +12,9 @@ pub(crate) mod settings;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> scsys::BoxResult {
-    println!("{:?}",  std::env::current_dir());
-    println!("{:?}",  std::env::temp_dir());
     let app = App::default();
     app.setup(None)?.run().await?;
-    println!("{:?}",  std::env::current_dir());
+
     Ok(())
 }
 
@@ -40,6 +38,8 @@ pub(crate) mod interface {
         pub fn setup(&self, workdir: Option<&str>) -> BoxResult<&Self> {
             let logger = self.settings().logger.clone().unwrap_or(scsys::prelude::Logger::from("info"));
             logger.setup();
+            
+            tracing::info!("Initializing the application and associated services...");
 
             let workdir = match workdir {
                 Some(v) => std::path::PathBuf::from(v),

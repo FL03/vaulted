@@ -6,6 +6,10 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: cargo
-    directory: /
+    directory: /bin
+    schedule:
+      interval: daily
+  - package-ecosystem: cargo
+    directory: /lib
     schedule:
       interval: daily

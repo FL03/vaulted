@@ -40,6 +40,9 @@ pub(crate) mod interface {
         pub fn settings(&self) -> &Settings {
             &self.ctx.settings
         }
+        /* 
+            During setup the application automatically creates a temporary directory and reframes the workdir
+        */
         pub fn setup(&self, tmp: Option<&str>) -> BoxResult<&Self> {
             tracing_subscriber::fmt::init();
 
@@ -51,7 +54,7 @@ pub(crate) mod interface {
             tmp.push("vaulted");
             
             std::fs::create_dir_all(tmp.clone())?; // Attempts to create the app directory within /tmp/vaulted
-            std::env::set_current_dir(tmp)?;
+            std::env::set_current_dir(tmp)?; // Attempts to set the working directory to the specified path
 
             Ok(self)
         }

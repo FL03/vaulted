@@ -1,11 +1,11 @@
 [workspace]
 default-members = [
-    "cli",
-    "sdk"
+    "bin",
+    "lib"
 ]
 members = [
-    "cli",
-    "sdk"
+    "bin",
+    "lib"
 ]
 
 [profile.dev]

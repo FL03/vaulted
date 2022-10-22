@@ -27,7 +27,7 @@ impl CommandLineInterface {
         let cmd = self.command.clone();
         if self.command.is_some() {
             let cmd = cmd.unwrap().clone();
-            cmd.handler().expect("Failed to parse...");
+            cmd.handler()?;
         }
 
         Ok(self)

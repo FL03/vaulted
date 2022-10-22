@@ -21,10 +21,7 @@ async fn main() -> scsys::BoxResult {
 }
 
 pub(crate) mod interface {
-    use super::{
-        cli::{cmds::Commands, CommandLineInterface},
-        Context, Settings,
-    };
+    use super::{cli::CommandLineInterface, Context, Settings};
     use scsys::BoxResult;
     use serde::{Deserialize, Serialize};
 
@@ -40,21 +37,26 @@ pub(crate) mod interface {
         pub fn settings(&self) -> &Settings {
             &self.ctx.settings
         }
-        /* 
-            During setup the application automatically creates a temporary directory and reframes the workdir
-        */
-        pub fn setup(&self, tmp: Option<&str>) -> BoxResult<&Self> {
-            tracing_subscriber::fmt::init();
+        pub fn setup(&self, workdir: Option<&str>) -> BoxResult<&Self> {
+            let logger = self.settings().logger.clone().unwrap_or(scsys::prelude::Logger::from("info"));
+            logger.setup();
 
-            let mut tmp = match tmp {
+            let workdir = match workdir {
                 Some(v) => std::path::PathBuf::from(v),
-                None => std::env::temp_dir()
+                None => {
+                    let mut path = std::env::current_dir().unwrap_or_default();
+                    path.push(".vault");
+                    path
+                }
             };
-            tracing::info!("{:?}", tmp);
-            tmp.push("vaulted");
-            
-            std::fs::create_dir_all(tmp.clone())?; // Attempts to create the app directory within /tmp/vaulted
-            std::env::set_current_dir(tmp)?; // Attempts to set the working directory to the specified path
+            std::fs::create_dir_all(workdir.clone())?; // Attempts to create the working directory at the specified root
+            std::env::set_current_dir(workdir.clone())?;
+            tracing::info!("{:?}", workdir);
+
+            let mut tmp = workdir.clone();
+            tmp.push("credentials");
+
+            std::fs::create_dir_all(tmp)?; // Attempts to create the app directory within /tmp/vaulted
 
             Ok(self)
         }

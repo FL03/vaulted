@@ -1,42 +1,12 @@
-[package]
-authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)"]
-categories = []
-description = "Vaulted is a secure credential management utility"
-edition = "2021"
-homepage = "https://gitlab.com/FL03/vaulted/-/wiki"
-keywords = []
-license = "MIT"
-name = "vaulted"
-publish = true
-readme = "README.md"
-repository = "https://gitlab.com/FL03/vaulted"
-version = "0.1.8"
-
-[lib]
-crate-type = ["cdylib", "rlib"]
-test = true
-
-[build-dependencies]
-
-[dependencies]
-argon2 = "0.4.1"
-clap = { features = ["derive"], version = "4.0.10" }
-log = "0.4.17"
-lru = "0.8.1"
-provider-archive = "0.6.0"
-scsys = { features = ["full"], version = "0.1.21" }
-serde = { features = ["derive"], version = "1.0.145" }
-serde_json = "1.0.86"
-strum = { features = ["derive"], version = "0.24.1" }
-tokio = { features = ["full"], version = "1.21.2" }
-tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
-
-[dev-dependencies]
-
-[package.metadata.docs.rs]
-all-features = true
-rustc-args = ["--cfg", "docsrs"]
+[workspace]
+default-members = [
+    "cli",
+    "sdk"
+]
+members = [
+    "cli",
+    "sdk"
+]
 
 [profile.dev]
 codegen-units = 256

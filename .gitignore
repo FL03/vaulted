@@ -58,4 +58,4 @@
 !**/*.env.example
 !**/*.config.js
 !**/*.config.cjs
-!src/components/artifacts
+!**/components/artifacts

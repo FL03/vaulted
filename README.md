@@ -1,5 +1,8 @@
 # vaulted
 
+[![Clippy](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust-clippy.yml)
+[![Rust](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust.yml/badge.svg)](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust.yml)
+
 Vaulted is a secure credential management utility, designed for complete integration with the Scattered-Systems ecosystem. The sdk implements the critical capabilities and structures required for interacting with generated artifacts, credentials, or otherwise. Leveraging the included cli, users can quickly setup a new vault and begin using is as a more complete and controled method of managing the overwhelming number of credentials today's internet neccessitates.
 
 ## Getting Started

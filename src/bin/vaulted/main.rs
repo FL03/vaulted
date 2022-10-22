@@ -14,7 +14,7 @@ pub(crate) mod settings;
 async fn main() -> scsys::BoxResult {
     println!("{:?}",  std::env::current_dir());
     println!("{:?}",  std::env::temp_dir());
-    let mut app = App::default();
+    let app = App::default();
     app.setup(None);
     app.run().await?;
 

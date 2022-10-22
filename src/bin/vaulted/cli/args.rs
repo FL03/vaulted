@@ -8,7 +8,6 @@ use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
 use strum::{EnumString, EnumVariantNames};
 
-
 #[derive(
     ValueEnum,
     Clone,

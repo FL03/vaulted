@@ -1,7 +1,6 @@
 #[cfg(test)]
-
 mod tests {
-    use vaulted::passwords::{Password, validate_password};
+    use vaulted::passwords::{validate_password, Password};
 
     #[test]
     fn test_compiles() {
@@ -13,16 +12,20 @@ mod tests {
 
     #[test]
     fn test_password_builder() {
-        let a = Password::generate(12).0;
+        let a: String = Password::generate(12).into();
+        assert_eq!(a.clone().len(), 12);
+
         let mut a_prime = Password::new(a.clone());
-        let a_hash = a_prime.hash_password().clone().0;
+        a_prime.hash_password();
+
+        let a_hash: String = a_prime.clone().into();
+        assert!(validate_password(a.clone(), a_hash));
 
         let sample_password = "sample".to_string();
         let mut b = Password::new(sample_password.clone());
         b.hash_password();
-        assert!(validate_password(a.clone(), a_hash));
         assert!(validate_password(sample_password, b.clone().0));
-        assert_eq!(a.len(), 12);
-    }
 
+        assert_ne!(a_prime, b);
+    }
 }

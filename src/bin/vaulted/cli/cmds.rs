@@ -20,7 +20,7 @@ pub enum Commands {
         action: CRUDArgs,
 
         #[clap(long, short, value_parser)]
-        length: Option<usize>
+        length: Option<usize>,
     },
     Vault {
         #[clap(value_enum)]
@@ -33,14 +33,14 @@ pub enum Commands {
 impl Commands {
     pub fn handler(&self) -> BoxResult<&Self> {
         match self {
-            Self::App { mode } => {},
+            Self::App { mode } => {}
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
                 let action = match action.clone() {
                     CRUDArgs::Create => {
                         let length = match length {
                             Some(v) => v.clone(),
-                            None => 12
+                            None => 12,
                         };
                         let password = vaulted::passwords::Password::generate(length);
                         tracing::info!("Generating a new password...");

@@ -1,5 +1,3 @@
-
-
 #[cfg(test)]
 mod tests {
     use vaulted::vaults::VaultAccess;
@@ -11,4 +9,3 @@ mod tests {
         assert_eq!(a, b)
     }
 }
-

@@ -2,6 +2,9 @@ name: Rust
 
 on:
   push:
+    branches-ignore:
+      - next
+      - dev
     tags:
       - v*.*.*
   pull_request:

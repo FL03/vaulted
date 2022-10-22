@@ -2,6 +2,9 @@ name: Clippy
 
 on:
   push:
+    branches-ignore:
+      - dev
+      - next
     tags:
       - v*.*.*
   pull_request:

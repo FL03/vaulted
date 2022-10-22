@@ -15,30 +15,32 @@ async fn main() -> scsys::BoxResult {
     println!("{:?}",  std::env::current_dir());
     println!("{:?}",  std::env::temp_dir());
     let app = App::default();
-    app.setup(None);
-    app.run().await?;
-
+    app.setup(None)?.run().await?;
+    println!("{:?}",  std::env::current_dir());
     Ok(())
 }
 
 pub(crate) mod interface {
     use super::{
         cli::{cmds::Commands, CommandLineInterface},
-        context::State,
+        Context, Settings,
     };
     use scsys::BoxResult;
     use serde::{Deserialize, Serialize};
 
-    #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
     pub struct App {
-        pub state: State,
+        ctx: Context,
     }
 
     impl App {
-        pub fn new(state: State) -> Self {
-            Self { state }
+        pub fn new(ctx: Context) -> Self {
+            Self { ctx }
         }
-        pub fn setup(&self, tmp: Option<&str>) -> &Self {
+        pub fn settings(&self) -> &Settings {
+            &self.ctx.settings
+        }
+        pub fn setup(&self, tmp: Option<&str>) -> BoxResult<&Self> {
             tracing_subscriber::fmt::init();
 
             let mut tmp = match tmp {
@@ -47,38 +49,23 @@ pub(crate) mod interface {
             };
             tracing::info!("{:?}", tmp);
             tmp.push("vaulted");
-
-            std::fs::create_dir_all(tmp).expect("");
-            self
-        }
-        async fn cli(&self) -> &Self {
-            CommandLineInterface::new()
-                .handler()
-                .expect("Failed to run the cli...");
-            self
-        }
-        pub async fn run(&self) -> BoxResult<&Self> {
-            self.cli().await;
+            
+            std::fs::create_dir_all(tmp.clone())?; // Attempts to create the app directory within /tmp/vaulted
+            std::env::set_current_dir(tmp)?;
 
             Ok(self)
         }
-        pub fn set_state(&mut self, state: &str) -> &Self {
-            let s = match State::try_from(state) {
-                Ok(v) => v,
-                Err(_) => self.state.clone(),
-            };
-            self.state = s;
-            tracing::info!("{:?}", self.state);
-            self
-        }
-        pub fn state(&self) -> &State {
-            &self.state
+        pub async fn run(&self) -> BoxResult<&Self> {
+            let cli = CommandLineInterface::new();
+            tracing::info!("{:?}", cli.handler()?);
+
+            Ok(self)
         }
     }
 
-    impl Default for App {
-        fn default() -> Self {
-            Self::new(State::default())
+    impl std::convert::From<Settings> for App {
+        fn from(settings: Settings) -> Self {
+            Self::new(Context::new(settings))
         }
     }
 }

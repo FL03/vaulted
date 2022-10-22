@@ -11,20 +11,36 @@ use strum::{EnumString, EnumVariantNames};
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Context {
     pub settings: Settings,
+    pub state: State
 }
 
 impl Context {
     pub fn new(settings: Settings) -> Self {
-        Self { settings }
+        let state = State::default();
+        Self { settings, state }
+    }
+    pub fn set_state(&mut self, state: &str) -> &Self {
+        let s = match State::try_from(state) {
+            Ok(v) => v,
+            Err(_) => self.state.clone(),
+        };
+        self.state = s;
+        tracing::info!("{:?}", self.state);
+        self
+    }
+    pub fn state(&self) -> &State {
+        &self.state
     }
 }
 
-#[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, EnumString, EnumVariantNames, Eq, Hash, PartialEq, Serialize)]
 #[strum(serialize_all = "snake_case")]
 pub enum State {
-    Request { data: serde_json::Value },
+    Request { data: Vec<String> },
     Idle,
 }
+
+
 
 impl Default for State {
     fn default() -> Self {

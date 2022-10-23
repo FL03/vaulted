@@ -7,8 +7,7 @@
 pub use self::{constants::*, statics::*, types::*};
 
 pub(crate) mod constants {
-
-    pub const TMP_DIR: &str = ".artifacts/data/tmp";
+    pub const TMP_DIR: &str = "/tmp";
 }
 
 pub(crate) mod statics {}

@@ -7,5 +7,6 @@
 
 pub mod archives;
 pub mod artifacts;
+pub mod creds;
 pub mod passwords;
 pub mod vaults;

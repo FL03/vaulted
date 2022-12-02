@@ -19,6 +19,7 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { features = ["derive"], version = "4.0.29" }
+csv = "1.1.6"
 log = "0.4.17"
 lru = "0.8.1"
 provider-archive = "0.6.0"

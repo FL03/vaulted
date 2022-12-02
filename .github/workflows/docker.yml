@@ -12,7 +12,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: hub.docker.com
   # github.repository as <account>/<repo>
-  IMAGE_NAME: jo3mccain/pzzld-gateway
+  IMAGE_NAME: jo3mccain/vaulted
   IMAGE_TAG: latest
 
 

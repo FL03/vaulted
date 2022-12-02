@@ -16,6 +16,7 @@ RUN yum update -y && yum upgrade -y
 
 FROM app-base as runner
 
-COPY --from=builder /project/target/release/vaulted-cli /bin/vaulted-cli
+COPY --from=builder /project/target/release/vaulted /bin/vaulted
 
-ENTRYPOINT ["vaulted-cli"]
+ENTRYPOINT [ "vaulted" ]
+CMD [ "-h" ]

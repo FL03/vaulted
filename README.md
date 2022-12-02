@@ -1,35 +1,67 @@
 # vaulted
 
-[![Clippy](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust-clippy.yml)
-[![Rust](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust.yml/badge.svg)](https://github.com/Scattered-Systems/vaulted/actions/workflows/rust.yml)
+[![Docker](https://github.com/FL03/vaulted/actions/workflows/docker.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/docker.yml)
+[![Clippy](https://github.com/FL03/pzzld-gateway/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/clippy.yml)
+[![Rust](https://github.com/FL03/pzzld-gateway/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/rust.yml)
+
+## About
 
 Vaulted is a secure credential management utility, designed for complete integration with the Scattered-Systems ecosystem. The sdk implements the critical capabilities and structures required for interacting with generated artifacts, credentials, or otherwise. Leveraging the included cli, users can quickly setup a new vault and begin using is as a more complete and controled method of managing the overwhelming number of credentials today's internet neccessitates.
 
-## Getting Started
+## Installation
 
-### Building from the source
+Use Rust's built-in package manager [crates](https://crates.io/crates/package) to install *package*.
 
-    git clone https://github.com/scattered-systems/vaulted
-    cd vaulted
+```bash
+cargo install package
+```
 
-#### _Build the workspace for release_
+## Usage
+
+- [crates.io](https://crates.io/crates/scsys)
+- [docs.rs](https://docs.rs/scsys)
+
+```rust
+use pzzld_gateway::gateways::{convert_credentials, simple_region, Gateway};
+use scsys::prelude::*;
+
+fn main() {
+  println!("{:?}", Message::<String>::default());
+}
+```
+
+### Cargo Commands
+
+#### *Build the workspace for release*
 
     cargo build --release --workspace
 
-#### _Run the help command to find out more information about availible commands_
+#### *Run the help command to find out more information about availible commands*
 
     cargo run --bin vaulted -- -h
 
 ### Docker
 
-#### _Build the image locally_
+#### *Build the image locally*
 
     docker build -t scsys/vaulted:{custom-tag} .
 
-#### _Pull the image_
+#### *Pull the image*
 
     docker pull scsys/vaulted:latest
 
-#### _Run the image_
+#### *Run the image*
 
     docker run scsys/vaulted:latest
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
+[MIT](https://choosealicense.com/licenses/mit/)

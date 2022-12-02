@@ -33,7 +33,9 @@ pub enum Commands {
 impl Commands {
     pub fn handler(&self) -> BoxResult<&Self> {
         match self {
-            Self::App { mode } => {}
+            Self::App { mode } => {
+                tracing::info!("{:?}", mode.clone().unwrap_or_default());
+            }
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
                 let action = match action.clone() {
@@ -52,7 +54,8 @@ impl Commands {
                 };
             }
             Self::Vault { action, identifier } => {
-                let action = match action.clone() {
+                let _id = identifier.clone();
+                match action.clone() {
                     CRUDArgs::Create => {}
                     CRUDArgs::Read => {}
                     CRUDArgs::Update => {}
@@ -62,9 +65,16 @@ impl Commands {
         };
         Ok(self)
     }
-    pub fn handle_crud<S, T>(&self, transition: &dyn Fn(S) -> T) -> &Self {
-        self
-    }
+}
+
+pub async fn handle_crud<S, T>(action: &CRUDArgs, transition: &dyn Fn(S) -> BoxResult<T>) -> BoxResult {
+    match action.clone() {
+        CRUDArgs::Create => {},
+        CRUDArgs::Read => {},
+        CRUDArgs::Update => {},
+        CRUDArgs::Delete => {},
+    };
+    Ok(())
 }
 
 pub fn transitioner<S, T>(ctx: S, actor: &dyn Fn(S) -> T) -> T {

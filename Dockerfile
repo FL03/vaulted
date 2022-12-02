@@ -8,14 +8,14 @@ ADD . /project
 WORKDIR /project
 
 COPY . .
-RUN cargo build --release
+RUN cargo build --release --workspace
 
 FROM photon as app-base
 
 RUN yum update -y && yum upgrade -y
 
-FROM app-base as latest
+FROM app-base as runner
 
-COPY --from=builder /project/target/release/vaulted /bin/vaulted
+COPY --from=builder /project/target/release/vaulted-cli /bin/vaulted-cli
 
-ENTRYPOINT ["vaulted"]
+ENTRYPOINT ["vaulted-cli"]

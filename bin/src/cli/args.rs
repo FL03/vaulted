@@ -9,7 +9,6 @@ use serde::{Deserialize, Serialize};
 use strum::{EnumString, EnumVariantNames};
 
 #[derive(
-    ValueEnum,
     Clone,
     Copy,
     Debug,
@@ -21,6 +20,7 @@ use strum::{EnumString, EnumVariantNames};
     Hash,
     PartialEq,
     Serialize,
+    ValueEnum
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum Runtime {
@@ -31,7 +31,6 @@ pub enum Runtime {
 }
 
 #[derive(
-    ValueEnum,
     Clone,
     Copy,
     Debug,
@@ -43,6 +42,7 @@ pub enum Runtime {
     Hash,
     PartialEq,
     Serialize,
+    ValueEnum,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum CRUDArgs {
@@ -51,4 +51,20 @@ pub enum CRUDArgs {
     Read,
     Update,
     Delete,
+}
+
+impl CRUDArgs {
+    pub fn create() -> Self {
+        Self::Create
+    }
+    pub fn read() -> Self {
+        Self::Read
+    }
+    pub fn update() -> Self {
+        Self::Update
+    }
+    pub fn delete() -> Self {
+        Self::Delete
+    }
+
 }

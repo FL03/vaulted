@@ -1,10 +1,9 @@
 /*
     Appellation: credential <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contrib: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
+    Description: ... Summary ...
 */
-use scsys::{components::identities::Id, Timestamp};
+use scsys::{Id, Timestamp};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]

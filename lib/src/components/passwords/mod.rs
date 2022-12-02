@@ -10,10 +10,7 @@ pub(crate) mod password;
 
 pub(crate) mod utils {
     use argon2::{Argon2, PasswordHash, PasswordVerifier};
-    use scsys::prelude::rand::{
-        self,
-        distributions::{Alphanumeric, DistString},
-    };
+    use rand::distributions::{Alphanumeric, DistString};
 
     pub fn generate_random_password(length: usize) -> String {
         Alphanumeric.sample_string(&mut rand::thread_rng(), length)

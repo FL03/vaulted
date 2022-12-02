@@ -36,8 +36,9 @@ pub(crate) mod interface {
             &self.ctx.settings
         }
         pub fn setup(&self, workdir: Option<&str>) -> BoxResult<&Self> {
-            let logger = self.settings().logger.clone().unwrap_or(scsys::prelude::Logger::from("info"));
-            logger.setup();
+            let mut logger = self.settings().logger.clone().unwrap_or(scsys::prelude::Logger::from("info"));
+            logger.setup(None);
+            tracing_subscriber::fmt::init();
             
             tracing::info!("Initializing the application and associated services...");
 

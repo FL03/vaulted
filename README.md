@@ -1,19 +1,20 @@
 # vaulted
 
-[![Docker](https://github.com/FL03/vaulted/actions/workflows/docker.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/docker.yml)
-[![Clippy](https://github.com/FL03/pzzld-gateway/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/clippy.yml)
-[![Rust](https://github.com/FL03/pzzld-gateway/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/pzzld-gateway/actions/workflows/rust.yml)
+[![Clippy](https://github.com/FL03/vaulted/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/vaulted/actions/workflows/clippy.yml)
+[![Docker](https://github.com/FL03/vaulted/actions/workflows/docker.yml/badge.svg)](https://github.com/FL03/vaulted/actions/workflows/docker.yml)
+[![Rust](https://github.com/FL03/vaulted/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/vaulted/actions/workflows/rust.yml)
 
 ## About
 
-Vaulted is a secure credential management utility, designed for complete integration with the Scattered-Systems ecosystem. The sdk implements the critical capabilities and structures required for interacting with generated artifacts, credentials, or otherwise. Leveraging the included cli, users can quickly setup a new vault and begin using is as a more complete and controled method of managing the overwhelming number of credentials today's internet neccessitates.
+Vaulted is a secure credential management utility, designed for complete integration with the Scattered-Systems ecosystem. The SDK implements the critical capabilities and structures required for interacting with generated artifacts, credentials, or otherwise. Leveraging the included cli, users can quickly setup a new vault and begin using is as a more complete and controlled method of managing the overwhelming number of credentials today's internet necessitates.
 
 ## Installation
 
-Use Rust's built-in package manager [crates](https://crates.io/crates/package) to install *package*.
+Use Rust's built-in package manager, cargo, and visit [vaulted-cli](https://crates.io/crates/vaulted-cli) for more informatin on *vaulted*.
 
 ```bash
-cargo install package
+cargo install vaulted-cli
+
 ```
 
 ## Usage
@@ -22,11 +23,11 @@ cargo install package
 - [docs.rs](https://docs.rs/scsys)
 
 ```rust
-use pzzld_gateway::gateways::{convert_credentials, simple_region, Gateway};
-use scsys::prelude::*;
+use vaulted::passwords::Password;
 
 fn main() {
-  println!("{:?}", Message::<String>::default());
+    let password = vaulted::passwords::Password::generate(12);
+    println!("Generated Password: {:?}", password);
 }
 ```
 
@@ -34,25 +35,36 @@ fn main() {
 
 #### *Build the workspace for release*
 
-    cargo build --release --workspace
+```bash
+cargo build --release --workspace
+```
 
 #### *Run the help command to find out more information about availible commands*
 
-    cargo run --bin vaulted -- -h
+```bash
+cargo run -- -h
+```
+
+or
+
+```bash
+vaulted -h
+```
 
 ### Docker
 
 #### *Build the image locally*
 
-    docker build -t scsys/vaulted:{custom-tag} .
+```bash
+docker buildx build --tag jo3mccain/vaulted:latest .
+```
 
 #### *Pull the image*
 
-    docker pull scsys/vaulted:latest
-
-#### *Run the image*
-
-    docker run scsys/vaulted:latest
+```bash
+docker pull jo3mccain/vaulted:latest
+docker run jo3mccain/vaulted:latest
+```
 
 ## Contributing
 

@@ -18,7 +18,6 @@ pub enum Commands {
     Password {
         #[clap(value_enum)]
         action: CRUDArgs,
-
         #[clap(long, short, value_parser)]
         length: Option<usize>,
     },
@@ -38,7 +37,7 @@ impl Commands {
             }
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
-                let action = match action.clone() {
+                match action.clone() {
                     CRUDArgs::Create => {
                         let length = match length {
                             Some(v) => v.clone(),

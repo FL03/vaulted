@@ -66,5 +66,9 @@ impl CRUDArgs {
     pub fn delete() -> Self {
         Self::Delete
     }
+}
 
+pub fn catalyst<S, T>(f: &dyn Fn(S) -> T, data: S) -> scsys::BoxResult<T> {
+    let res = f(data);
+    Ok(res)
 }

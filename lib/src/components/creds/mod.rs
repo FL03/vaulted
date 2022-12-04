@@ -8,6 +8,4 @@ pub use self::{credential::*, utils::*};
 
 pub(crate) mod credential;
 
-pub(crate) mod utils {
-
-}
+pub(crate) mod utils {}

@@ -12,16 +12,20 @@ pub struct Credential {
     pub key: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    pub timestamp: Timestamp
+    pub timestamp: Timestamp,
 }
 
 impl Credential {
     pub fn new(key: String, label: Option<String>) -> Self {
         let id = Id::default();
         let timestamp = Timestamp::default();
-        Self { id, key, label, timestamp }
+        Self {
+            id,
+            key,
+            label,
+            timestamp,
+        }
     }
-
 }
 
 impl std::convert::From<&Self> for Credential {
@@ -29,4 +33,3 @@ impl std::convert::From<&Self> for Credential {
         data.clone()
     }
 }
-

@@ -16,6 +16,10 @@ version = "0.1.8"
 crate-type = ["cdylib", "rlib"]
 test = true
 
+[[example]]
+name = "simple"
+path = "examples/simple.rs"
+
 [build-dependencies]
 
 [dependencies]

@@ -1,6 +1,6 @@
 /*
     Appellation: cmds <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
+    Contrib: FL03 <jo3mccain@icloud.com>
     Description:
         ... Summary ...
 */
@@ -8,6 +8,7 @@ use super::args::CRUDArgs;
 use clap::Subcommand;
 use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
+use vaulted::passwords::PasswordBuilder;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Subcommand)]
 pub enum Commands {
@@ -43,8 +44,11 @@ impl Commands {
                             Some(v) => v.clone(),
                             None => 12,
                         };
-                        let password = vaulted::passwords::Password::generate(length);
-                        tracing::info!("Generating a new password...");
+                        let mut builder = PasswordBuilder::new();
+                        tracing::info!("Process: Generating a new password...");
+                        builder.generate(length);
+                        tracing::info!("Success: Generated a new password...");
+                        let password = builder.password().clone();
                         println!("{}", password)
                     }
                     CRUDArgs::Read => {}
@@ -66,12 +70,15 @@ impl Commands {
     }
 }
 
-pub async fn handle_crud<S, T>(action: &CRUDArgs, transition: &dyn Fn(S) -> BoxResult<T>) -> BoxResult {
+pub async fn handle_crud<S, T>(
+    action: &CRUDArgs,
+    transition: &dyn Fn(S) -> BoxResult<T>,
+) -> BoxResult {
     match action.clone() {
-        CRUDArgs::Create => {},
-        CRUDArgs::Read => {},
-        CRUDArgs::Update => {},
-        CRUDArgs::Delete => {},
+        CRUDArgs::Create => {}
+        CRUDArgs::Read => {}
+        CRUDArgs::Update => {}
+        CRUDArgs::Delete => {}
     };
     Ok(())
 }

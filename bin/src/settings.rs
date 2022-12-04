@@ -4,7 +4,13 @@
     Description:
         ... Summary ...
 */
-use scsys::{prelude::{config::{Config, Environment}, Logger, Server}, ConfigResult, try_collect_config_files};
+use scsys::{
+    prelude::{
+        config::{Config, Environment},
+        Logger, Server,
+    },
+    try_collect_config_files, ConfigResult,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -16,7 +22,11 @@ pub struct Settings {
 
 impl Settings {
     pub fn new(logger: Option<Logger>, server: Server, workdir: String) -> Self {
-        Self { logger, server, workdir }
+        Self {
+            logger,
+            server,
+            workdir,
+        }
     }
     pub fn build() -> ConfigResult<Self> {
         let mut builder = Config::builder()
@@ -27,8 +37,10 @@ impl Settings {
             .set_default("workdir", "/")?;
 
         match try_collect_config_files("**/Vaulted.*", false) {
-            Err(_) => {},
-            Ok(v) => { builder = builder.add_source(v); }
+            Err(_) => {}
+            Ok(v) => {
+                builder = builder.add_source(v);
+            }
         };
 
         match std::env::var("RUST_LOG") {
@@ -55,6 +67,10 @@ impl Default for Settings {
         let server = Server::new("127.0.0.1".to_string(), 8000);
         let curdir = std::env::current_dir().unwrap();
         let workdir = curdir.to_str().expect("").to_string();
-        Self { logger, server, workdir }
+        Self {
+            logger,
+            server,
+            workdir,
+        }
     }
 }

@@ -1,8 +1,7 @@
 /*
     Appellation: access <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
 use serde::{Deserialize, Serialize};
 
@@ -16,5 +15,17 @@ pub enum VaultAccess {
 impl Default for VaultAccess {
     fn default() -> Self {
         Self::None
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_vault_access_default() {
+        let a = VaultAccess::default();
+        let b = VaultAccess::None;
+        assert_eq!(a, b)
     }
 }

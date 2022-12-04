@@ -20,7 +20,7 @@ use strum::{EnumString, EnumVariantNames};
     Hash,
     PartialEq,
     Serialize,
-    ValueEnum
+    ValueEnum,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum Runtime {

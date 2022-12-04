@@ -1,8 +1,7 @@
 /*
     Appellation: password <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
 use super::utils::generate_random_password;
 use argon2::password_hash::{PasswordHash, PasswordHasher, PasswordVerifier, SaltString};
@@ -17,12 +16,11 @@ impl Password {
     pub fn new(password: String) -> Self {
         Self(password)
     }
+    pub fn random(length: usize) -> Self {
+        Self::new(generate_random_password(length))
+    }
     pub fn argon2(&self) -> Argon2 {
         Argon2::default()
-    }
-    pub fn generate(&mut self, length: usize) -> &Self {
-        self.0 = generate_random_password(length);
-        self
     }
     pub fn hash(&mut self) -> BoxResult<&Self> {
         let salt = SaltString::generate(&mut rand::rngs::OsRng);
@@ -86,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_password() {
-        let a: String = Password::from(12).to_string();
+        let a: String = Password::random(12).to_string();
         assert_eq!(a.len(), 12);
 
         let mut a_prime = Password::new(a.clone());

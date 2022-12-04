@@ -1,10 +1,12 @@
-use vaulted::passwords::Password;
+use vaulted::passwords::{Password, PasswordBuilder};
 
 fn main() {
-    // Create a new password instance
-    let mut password = Password::default();
+    // Initialize a new builder
+    let mut builder = PasswordBuilder::default();
     // Generate a new password of the given length
-    password.generate(12);
+    builder.generate(12);
+    let password: Password = builder.password().clone();
+
     // Assert that the password equal to given length
     assert!(password.to_string().len() == 12)
 }

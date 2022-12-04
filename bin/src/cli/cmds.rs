@@ -38,10 +38,10 @@ impl Commands {
             }
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
-                match action.clone() {
+                match *action {
                     CRUDArgs::Create => {
                         let length = match length {
-                            Some(v) => v.clone(),
+                            Some(v) => *v,
                             None => 12,
                         };
                         let mut builder = PasswordBuilder::new();
@@ -58,7 +58,7 @@ impl Commands {
             }
             Self::Vault { action, identifier } => {
                 let _id = identifier.clone();
-                match action.clone() {
+                match *action {
                     CRUDArgs::Create => {}
                     CRUDArgs::Read => {}
                     CRUDArgs::Update => {}
@@ -72,9 +72,9 @@ impl Commands {
 
 pub async fn handle_crud<S, T>(
     action: &CRUDArgs,
-    transition: &dyn Fn(S) -> BoxResult<T>,
+    _transition: &dyn Fn(S) -> BoxResult<T>,
 ) -> BoxResult {
-    match action.clone() {
+    match *action {
         CRUDArgs::Create => {}
         CRUDArgs::Read => {}
         CRUDArgs::Update => {}

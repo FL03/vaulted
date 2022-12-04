@@ -26,10 +26,16 @@ impl CommandLineInterface {
     pub fn handler(&self) -> scsys::BoxResult<&Self> {
         let cmd = self.command.clone();
         if self.command.is_some() {
-            let cmd = cmd.unwrap().clone();
+            let cmd = cmd.unwrap();
             cmd.handler()?;
         }
 
         Ok(self)
+    }
+}
+
+impl Default for CommandLineInterface {
+    fn default() -> Self {
+        Self::new()
     }
 }

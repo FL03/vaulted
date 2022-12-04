@@ -23,10 +23,7 @@ impl Archive {
         Self::new(dir, data)
     }
     pub fn save(&self, save_as: Option<&str>) -> std::io::Result<&Self> {
-        let fname = match save_as {
-            Some(v) => v,
-            None => "vault",
-        };
+        let fname = save_as.unwrap_or("vault");
         let path = format!("{}/{}.json", self.dir, fname);
         create_json_file(path.as_str(), json!(self.data))?;
         Ok(self)

@@ -93,13 +93,13 @@ mod tests {
     #[test]
     fn test_password() {
         let a: String = Password::default().generate(12).to_string();
-        assert_eq!(a.clone().len(), 12);
+        assert_eq!(a.len(), 12);
 
         let mut a_prime = Password::new(a.clone());
         assert!(a_prime.hash_password().is_ok());
 
         let a_hash: String = a_prime.clone().to_string();
-        assert!(validate_password(a.clone(), a_hash));
+        assert!(validate_password(a, a_hash));
 
         let sample_password = "sample".to_string();
         let mut b = Password::new(sample_password.clone());

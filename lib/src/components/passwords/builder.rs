@@ -39,7 +39,7 @@ pub struct BuilderParams {
 
 impl BuilderParams {
     pub fn new(length: usize, options: Option<Vec<PasswordOptions>>) -> Self {
-        let options = options.unwrap_or(vec![Default::default()]);
+        let options = options.unwrap_or_else(|| vec![Default::default()]);
         Self { length, options }
     }
 }

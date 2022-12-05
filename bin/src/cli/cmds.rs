@@ -12,10 +12,6 @@ use vaulted::passwords::PasswordBuilder;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Subcommand)]
 pub enum Commands {
-    App {
-        #[clap(long, short, value_parser)]
-        mode: Option<String>,
-    },
     Password {
         #[clap(value_enum)]
         action: CRUDArgs,
@@ -23,19 +19,14 @@ pub enum Commands {
         length: Option<usize>,
     },
     Vault {
-        #[clap(value_enum)]
-        action: CRUDArgs,
         #[clap(long, short, value_parser)]
-        identifier: String,
+        query: String,
     },
 }
 
 impl Commands {
     pub fn handler(&self) -> BoxResult<&Self> {
         match self {
-            Self::App { mode } => {
-                tracing::info!("{:?}", mode.clone().unwrap_or_default());
-            }
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
                 match *action {
@@ -45,25 +36,19 @@ impl Commands {
                             None => 12,
                         };
                         let mut builder = PasswordBuilder::new();
-                        tracing::info!("Process: Generating a new password...");
+                        tracing::debug!("Process: Generating a new password...");
                         builder.generate(length);
-                        tracing::info!("Success: Generated a new password...");
+
                         let password = builder.password().clone();
-                        println!("{}", password)
+                        println!("Created a new password: {}", password);
                     }
                     CRUDArgs::Read => {}
                     CRUDArgs::Update => {}
                     CRUDArgs::Delete => {}
                 };
             }
-            Self::Vault { action, identifier } => {
-                let _id = identifier.clone();
-                match *action {
-                    CRUDArgs::Create => {}
-                    CRUDArgs::Read => {}
-                    CRUDArgs::Update => {}
-                    CRUDArgs::Delete => {}
-                };
+            Self::Vault { query } => {
+                let _query = query.clone();
             }
         };
         Ok(self)

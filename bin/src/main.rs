@@ -48,7 +48,7 @@ impl App {
     }
     pub async fn runtime(&self) -> BoxResult<&Self> {
         let cli = cli::CommandLineInterface::new();
-        tracing::info!("{:?}", cli.handler()?);
+        tracing::debug!("{:?}", cli.handler()?);
 
         Ok(self)
     }
@@ -60,10 +60,10 @@ impl App {
         logger.setup(None);
         tracing_subscriber::fmt::init();
 
-        tracing::info!("Initializing the application and associated services...");
+        tracing::info!("Startup: Initializing the application and associated services...");
 
         let workdir = setup_workdir(workdir)?;
-        tracing::info!("{:?}", workdir);
+        tracing::debug!("{:?}", workdir);
 
         let mut tmp = std::env::current_dir()?;
         tmp.push(".vault/credentials");

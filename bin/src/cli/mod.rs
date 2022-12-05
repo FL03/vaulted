@@ -16,6 +16,12 @@ pub mod cmds;
 pub struct CommandLineInterface {
     #[clap(subcommand)]
     pub command: Option<cmds::Commands>,
+    #[arg(action = clap::ArgAction::SetTrue, long, short)]
+    pub debug: bool,
+    #[clap(long, short, value_parser)]
+    pub mode: Option<String>,
+    #[arg(action = clap::ArgAction::SetTrue, long, short)]
+    pub update: bool,
 }
 
 impl CommandLineInterface {

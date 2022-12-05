@@ -8,6 +8,7 @@ use argon2::password_hash::{PasswordHash, PasswordHasher, PasswordVerifier, Salt
 use argon2::Argon2;
 use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
+use std::convert::From;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Password(String);
@@ -46,66 +47,62 @@ impl Password {
     }
 }
 
-impl<'a> std::convert::From<PasswordHash<'a>> for Password {
-    fn from(data: PasswordHash<'a>) -> Self {
-        Self::new(data.to_string())
-    }
-}
-
-impl<T: std::string::ToString> std::convert::From<&T> for Password {
-    fn from(data: &T) -> Self {
-        Self::new(data.to_string())
-    }
-}
-
-impl std::convert::From<usize> for Password {
-    fn from(data: usize) -> Self {
-        Self::new(generate_random_password(data))
-    }
-}
-
 impl std::fmt::Display for Password {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", &self.0)
     }
 }
 
+impl<'a> From<PasswordHash<'a>> for Password {
+    fn from(data: PasswordHash<'a>) -> Self {
+        Self::new(data.to_string())
+    }
+}
+
+impl From<&str> for Password {
+    fn from(data: &str) -> Self {
+        Self::new(data.to_string())
+    }
+}
+
+impl<T: ToString> From<&T> for Password {
+    fn from(data: &T) -> Self {
+        Self::new(data.to_string())
+    }
+}
+
+impl From<usize> for Password {
+    fn from(data: usize) -> Self {
+        Self::new(generate_random_password(data))
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::passwords::{validate_password, Password};
+    use super::*;
 
     #[test]
-    fn test_compiles() {
-        let f = |x: usize| x.pow(2);
-        let a = f(2);
-        let b = 4;
-        assert_eq!(a, b)
+    fn test_random_password() {
+        let a: String = Password::random(12).to_string();
+        assert_eq!(a.len(), 12);
     }
 
     #[test]
     fn test_password() {
-        let a: String = Password::random(12).to_string();
-        assert_eq!(a.len(), 12);
+        let pwd: String = Password::random(12).to_string();
 
-        let mut a_prime = Password::new(a.clone());
-        assert!(a_prime.hash().is_ok());
+        let mut a = Password::new(pwd.clone());
+        assert!(a.hash().is_ok());
+        assert!(a.validate(pwd.as_bytes()));
 
-        let a_hash: String = a_prime.clone().to_string();
-        assert!(validate_password(a, a_hash));
-
-        let sample_password = "sample".to_string();
-        let mut b = Password::new(sample_password.clone());
-        assert!(b.hash().is_ok());
-        assert!(validate_password(sample_password, b.password().clone()));
-
-        assert_ne!(a_prime, b);
+        let b = Password::from("sample");
+        assert_ne!(a, b);
     }
 
     #[test]
     fn test_valid_password() {
-        let sample_password = "sample".to_string();
-        let mut a = Password::new(sample_password.clone());
+        let mut a = Password::from("sample");
         assert!(a.hash().is_ok());
-        assert!(validate_password(sample_password, a.password().clone()));
+        assert!(a.validate("sample".as_bytes()));
     }
 }

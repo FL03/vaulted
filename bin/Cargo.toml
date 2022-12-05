@@ -23,7 +23,7 @@ csv = "1.1.6"
 log = "0.4.17"
 lru = "0.8.1"
 provider-archive = "0.6.0"
-scsys = { features = ["full"], version = "0.1.35" }
+scsys = { features = ["full"], version = "0.1.36" }
 serde = { features = ["derive"], version = "1.0.148" }
 serde_json = "1.0.89"
 strum = { features = ["derive"], version = "0.24.1" }

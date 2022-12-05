@@ -1,26 +1,47 @@
 /*
-    Appellation: credentials <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Appellation: credential <module>
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
-use scsys::{prelude::bson::oid::ObjectId, Timestamp};
+use scsys::{Id, Timestamp};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum CredentialMetadata {
-    Tokens(Vec<Value>),
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Credential {
-    pub id: ObjectId,
+    pub id: Id,
+    pub key: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
+    pub timestamp: Timestamp,
 }
 
-pub trait CredentialSpec {
-    fn credential(&self) -> &Self;
-    fn message(&self) -> String;
-    fn metadata(&self) -> Vec<Value>;
-    fn timestamp(&self) -> Timestamp;
+impl Credential {
+    pub fn new(key: String, label: Option<String>) -> Self {
+        let id = Id::default();
+        let timestamp = Timestamp::default();
+        Self {
+            id,
+            key,
+            label,
+            timestamp,
+        }
+    }
+}
+
+impl std::convert::From<&Self> for Credential {
+    fn from(data: &Self) -> Self {
+        data.clone()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_default() {
+        let a = Credential::default();
+        let b = Credential::from(a.clone());
+        assert_eq!(&a, &b)
+    }
 }

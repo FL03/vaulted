@@ -20,7 +20,7 @@ use strum::{EnumString, EnumVariantNames};
     Hash,
     PartialEq,
     Serialize,
-    ValueEnum
+    ValueEnum,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum Runtime {
@@ -66,5 +66,9 @@ impl CRUDArgs {
     pub fn delete() -> Self {
         Self::Delete
     }
+}
 
+pub fn catalyst<S, T>(f: &dyn Fn(S) -> T, data: S) -> scsys::BoxResult<T> {
+    let res = f(data);
+    Ok(res)
 }

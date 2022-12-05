@@ -1,11 +1,11 @@
 /*
     Appellation: passwords <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
-pub use self::{password::*, utils::*};
+pub use self::{builder::*, password::*, utils::*};
 
+pub(crate) mod builder;
 pub(crate) mod password;
 
 pub(crate) mod utils {

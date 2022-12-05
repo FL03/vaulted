@@ -1,8 +1,7 @@
 /*
     Appellation: cli <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contributors: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
 
 use clap::Parser;
@@ -17,6 +16,12 @@ pub mod cmds;
 pub struct CommandLineInterface {
     #[clap(subcommand)]
     pub command: Option<cmds::Commands>,
+    #[arg(action = clap::ArgAction::SetTrue, long, short)]
+    pub debug: bool,
+    #[clap(long, short, value_parser)]
+    pub mode: Option<String>,
+    #[arg(action = clap::ArgAction::SetTrue, long, short)]
+    pub update: bool,
 }
 
 impl CommandLineInterface {
@@ -26,10 +31,16 @@ impl CommandLineInterface {
     pub fn handler(&self) -> scsys::BoxResult<&Self> {
         let cmd = self.command.clone();
         if self.command.is_some() {
-            let cmd = cmd.unwrap().clone();
+            let cmd = cmd.unwrap();
             cmd.handler()?;
         }
 
         Ok(self)
+    }
+}
+
+impl Default for CommandLineInterface {
+    fn default() -> Self {
+        Self::new()
     }
 }

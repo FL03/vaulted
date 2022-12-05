@@ -1,17 +1,14 @@
 /*
     Appellation: fs <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
-    Description:
-        ... Summary ...
+    Contributors: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
 use serde_json::Value;
-use std::{
-    fs::{create_dir_all, read_dir, read_to_string, ReadDir},
-    path::PathBuf,
-};
+use std::fs::{create_dir_all, read_dir, read_to_string, ReadDir};
+use std::path::PathBuf;
 
-pub fn create_json_file(path: &str, data: Value) -> std::io::Result<()> {
-    std::fs::write(path, serde_json::to_string_pretty(&data).unwrap())
+pub fn to_json(path: &str, data: Value) -> std::io::Result<()> {
+    std::fs::write(path, serde_json::to_string_pretty(&data)?)
 }
 
 pub fn read_dir_or(path: &str) -> ReadDir {
@@ -32,6 +29,6 @@ pub fn read_files_in_dir(path: &str) -> std::io::Result<Vec<PathBuf>> {
     Ok(res)
 }
 
-pub fn read_json_file(path: &str) -> Value {
+pub fn from_json(path: &str) -> Value {
     serde_json::from_str::<Value>(&read_to_string(path).unwrap()).unwrap()
 }

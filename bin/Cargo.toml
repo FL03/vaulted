@@ -19,17 +19,20 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { features = ["derive"], version = "4.0.29" }
+csv = "1.1.6"
 log = "0.4.17"
 lru = "0.8.1"
 provider-archive = "0.6.0"
-scsys = { features = ["full"], version = "0.1.35" }
+scsys = { features = ["full"], version = "0.1.36" }
 serde = { features = ["derive"], version = "1.0.148" }
 serde_json = "1.0.89"
 strum = { features = ["derive"], version = "0.24.1" }
+tarpc = { features = ["full"], version = "0.31.0" }
 tokio = { features = ["full"], version = "1.22.0" }
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 vaulted = { path = "../lib" }
+vfs = "0.8.0"
 
 [dev-dependencies]
 

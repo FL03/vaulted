@@ -1,6 +1,6 @@
 /*
     Appellation: cmds <module>
-    Contributors: FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)
+    Contrib: FL03 <jo3mccain@icloud.com>
     Description:
         ... Summary ...
 */
@@ -8,71 +8,62 @@ use super::args::CRUDArgs;
 use clap::Subcommand;
 use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
+use vaulted::passwords::PasswordBuilder;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Subcommand)]
 pub enum Commands {
-    App {
-        #[clap(long, short, value_parser)]
-        mode: Option<String>,
-    },
     Password {
         #[clap(value_enum)]
         action: CRUDArgs,
-
         #[clap(long, short, value_parser)]
         length: Option<usize>,
     },
     Vault {
-        #[clap(value_enum)]
-        action: CRUDArgs,
         #[clap(long, short, value_parser)]
-        identifier: String,
+        query: String,
     },
 }
 
 impl Commands {
     pub fn handler(&self) -> BoxResult<&Self> {
         match self {
-            Self::App { mode } => {
-                tracing::info!("{:?}", mode.clone().unwrap_or_default());
-            }
             Self::Password { action, length } => {
                 // let length = length.unwrap_or_default();
-                let action = match action.clone() {
+                match *action {
                     CRUDArgs::Create => {
                         let length = match length {
-                            Some(v) => v.clone(),
+                            Some(v) => *v,
                             None => 12,
                         };
-                        let password = vaulted::passwords::Password::generate(length);
-                        tracing::info!("Generating a new password...");
-                        println!("{}", password)
+                        let mut builder = PasswordBuilder::new();
+                        tracing::debug!("Process: Generating a new password...");
+                        builder.generate(length);
+
+                        let password = builder.password().clone();
+                        println!("Created a new password: {}", password);
                     }
                     CRUDArgs::Read => {}
                     CRUDArgs::Update => {}
                     CRUDArgs::Delete => {}
                 };
             }
-            Self::Vault { action, identifier } => {
-                let _id = identifier.clone();
-                match action.clone() {
-                    CRUDArgs::Create => {}
-                    CRUDArgs::Read => {}
-                    CRUDArgs::Update => {}
-                    CRUDArgs::Delete => {}
-                };
+            Self::Vault { query } => {
+                let _query = query.clone();
             }
         };
         Ok(self)
     }
 }
 
-pub async fn handle_crud<S, T>(action: &CRUDArgs, transition: &dyn Fn(S) -> BoxResult<T>) -> BoxResult {
-    match action.clone() {
-        CRUDArgs::Create => {},
-        CRUDArgs::Read => {},
-        CRUDArgs::Update => {},
-        CRUDArgs::Delete => {},
+pub async fn handle_crud<S, T>(
+    action: &CRUDArgs,
+    _transition: &dyn Fn(S) -> BoxResult<T>,
+) -> BoxResult {
+    match *action {
+        CRUDArgs::Create => {}
+        CRUDArgs::Read => {}
+        CRUDArgs::Update => {}
+        CRUDArgs::Delete => {}
     };
     Ok(())
 }

@@ -1,15 +1,18 @@
-
 version: 2
 updates:
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
   - package-ecosystem: cargo
-    directory: /bin
+    directory: /vaulted
     schedule:
       interval: daily
   - package-ecosystem: cargo
-    directory: /lib
+    directory: /bin/cli
     schedule:
       interval: daily

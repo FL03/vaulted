@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  cli:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: cli
+    container_name: vaulted-cli
+    volumes:
+      - /config:/config
+      - /data:/data
+  cache:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - /data/redis:/usr/local/etc/redis
+
+volumes:
+  config:
+  data:

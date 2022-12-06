@@ -1,11 +1,11 @@
 [workspace]
 default-members = [
-    "bin",
-    "lib"
+    "bin/cli",
+    "vaulted"
 ]
 members = [
-    "bin",
-    "lib"
+    "bin/cli",
+    "vaulted"
 ]
 
 [profile.dev]

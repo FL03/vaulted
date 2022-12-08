@@ -1,8 +1,7 @@
 /*
     Appellation: vaulted <binary>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
-        ... Summary ...
+    Description: ... Summary ...
 */
 pub use self::{context::*, settings::*};
 
@@ -10,18 +9,18 @@ pub mod cli;
 pub(crate) mod context;
 pub(crate) mod settings;
 
-use scsys::BoxResult;
+use scsys::AsyncResult;
 use serde::{Deserialize, Serialize};
 
 #[tokio::main(flavor = "multi_thread")]
-async fn main() -> scsys::BoxResult {
+async fn main() -> AsyncResult {
     let mut app = App::default();
     app.start(None).await?;
 
     Ok(())
 }
 
-pub fn setup_workdir(workdir: Option<&str>) -> BoxResult<std::path::PathBuf> {
+pub fn setup_workdir(workdir: Option<&str>) -> AsyncResult<std::path::PathBuf> {
     // If provided an option, get the path or set the working directory to the current dir and
     let mut wd = match workdir {
         Some(v) => std::path::PathBuf::from(v),
@@ -46,7 +45,7 @@ impl App {
     pub fn new(ctx: Context) -> Self {
         Self { ctx }
     }
-    pub async fn runtime(&self) -> BoxResult<&Self> {
+    pub async fn runtime(&self) -> AsyncResult<&Self> {
         let cli = cli::CommandLineInterface::new();
         tracing::debug!("{:?}", cli.handler()?);
 
@@ -55,7 +54,7 @@ impl App {
     pub fn settings(&self) -> &Settings {
         &self.ctx.settings
     }
-    pub async fn setup(&self, workdir: Option<&str>) -> BoxResult<&Self> {
+    pub async fn setup(&self, workdir: Option<&str>) -> AsyncResult<&Self> {
         let mut logger = self.settings().logger.clone().unwrap_or_default();
         logger.setup(None);
         tracing_subscriber::fmt::init();
@@ -73,7 +72,7 @@ impl App {
         Ok(self)
     }
     /// Quickstart the application with a simple method bootstrapping implied capabilities
-    pub async fn start(&mut self, workdir: Option<&str>) -> BoxResult {
+    pub async fn start(&mut self, workdir: Option<&str>) -> AsyncResult {
         self.setup(workdir).await?;
         self.runtime().await?;
 

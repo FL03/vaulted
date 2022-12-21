@@ -1,29 +1,44 @@
 name: Docker
 
 on:
+  pull_request:
+    branches: [ "main", "master", "prod*", "nightly*" ]
+    tags: [ "v*.*.*" ]
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master", "prod*" ]
     tags: [ "v*.*.*" ]
   schedule:
     - cron: "30 9 * * 5"
   workflow_dispatch:
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: hub.docker.com
-  # github.repository as <account>/<repo>
   IMAGE_NAME: jo3mccain/vaulted
   IMAGE_TAG: latest
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker buildx build --tag ${{ secrets.DOCKERHUB_USERNAME }}/vaulted .
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile:
+          - Dockerfile
+        image: 
+          - vaulted
+    steps:
     - uses: actions/checkout@v3
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name: ${{ env.IMAGE_NAME }}
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        dockerfile: ${{ matrix.dockerfile }}
+        name: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        snapshot: true
+        username: ${{ secrets.DOCKERHUB_USERNAME }}

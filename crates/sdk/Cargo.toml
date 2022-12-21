@@ -1,0 +1,33 @@
+[package]
+authors = ["FL03 <jo3mccain@icloud.com> (https://github.com/FL03)"]
+categories = []
+description = "Vaulted is a secure credential management utility"
+edition = "2021"
+homepage = "https://gihub.com/FL03/vaulted/wiki"
+keywords = []
+license = "Apache-2.0"
+name = "vaulted-sdk"
+publish = true
+repository = "https://gihub.com/FL03/vaulted"
+version = "0.1.8"
+
+[features]
+default = [ "core" ]
+full = [ "core" ]
+
+core = [ "vaulted-core" ]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+test = true
+
+[build-dependencies]
+
+[dependencies]
+vaulted-core = { features = [], optional = true, path = "../core", version = "0.1.8"}
+
+[dev-dependencies]
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]

@@ -26,10 +26,10 @@ EXPOSE 6379
 
 FROM runner-base as runner
 
-COPY --chown=55 Vaulted.toml /config/Vaulted.toml
-COPY --from=builder /project/target/release/vaulted /bin/vaulted
-
+COPY --chown=55 .config /config
 VOLUME [ "/config" ]
+
+COPY --from=builder /project/target/release/vaulted /bin/vaulted
 
 FROM runner as cli
 

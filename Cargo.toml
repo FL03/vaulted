@@ -1,10 +1,13 @@
 [workspace]
 default-members = [
-    "bin/cli",
     "vaulted"
 ]
+exclude = [
+    "xtask"
+]
 members = [
-    "bin/cli",
+    "crates/core",
+    "crates/sdk",
     "vaulted"
 ]
 

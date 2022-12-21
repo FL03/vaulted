@@ -1,4 +1,4 @@
-use vaulted::passwords::{Password, PasswordBuilder};
+use vaulted_sdk::prelude::{Password, PasswordBuilder};
 
 fn main() {
     // Initialize a new builder

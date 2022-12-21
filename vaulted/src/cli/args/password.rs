@@ -3,10 +3,10 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use vaulted_sdk::prelude::PasswordBuilder;
 use clap::{Args, ValueEnum};
 use scsys::BoxResult;
 use serde::{Deserialize, Serialize};
+use vaulted_sdk::prelude::PasswordBuilder;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize, ValueEnum)]
 pub enum Crud {
@@ -14,16 +14,15 @@ pub enum Crud {
     Create = 0,
     Read = 1,
     Update = 2,
-    Delete = 3
+    Delete = 3,
 }
-
 
 #[derive(Args, Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Passwords {
     #[clap(value_enum)]
     action: Option<Crud>,
     #[clap(default_value = None, long, short, value_parser)]
-    length: Option<usize>
+    length: Option<usize>,
 }
 
 impl Passwords {
@@ -37,7 +36,7 @@ impl Passwords {
                     let mut builder = PasswordBuilder::new();
                     tracing::debug!("Process: Generating a new password...");
                     builder.generate(self.length.unwrap_or(12));
-    
+
                     let password = builder.password().clone();
                     println!("Created a new password: {}", password);
                 }
@@ -46,7 +45,7 @@ impl Passwords {
                 _ => {}
             };
         }
-        
+
         Ok(self)
     }
     pub fn handler(&self) -> BoxResult<&Self> {

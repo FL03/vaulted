@@ -7,7 +7,7 @@
 pub use vaulted_core as core;
 
 pub mod prelude {
-    pub use super::*;
     #[cfg(feature = "core")]
     pub use super::core::{self, passphrases::*, passwords::*, vaults::*};
+    pub use super::*;
 }

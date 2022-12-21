@@ -41,7 +41,7 @@ mod tests {
     #[test]
     fn test_default() {
         let a = Credential::default();
-        let b = Credential::from(a.clone());
+        let b = a.clone();
         assert_eq!(&a, &b)
     }
 }

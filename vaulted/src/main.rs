@@ -31,7 +31,6 @@ async fn main() -> BoxResult {
 
 pub type Locked<T> = Arc<Mutex<T>>;
 
-
 #[derive(Clone, Debug)]
 pub struct Application {
     pub cnf: Settings,

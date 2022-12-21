@@ -35,7 +35,7 @@ mod test {
     #[test]
     fn test_default() {
         let a = VaultBuilder::default();
-        let b = VaultBuilder::from(a.clone());
+        let b = a.clone();
         assert_eq!(a, b);
     }
 }

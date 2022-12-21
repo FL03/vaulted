@@ -17,7 +17,7 @@ pub(crate) mod context {
     use clap::Parser;
     use scsys::BoxResult;
     use serde::{Deserialize, Serialize};
-    use std::sync::{Arc, Mutex};
+    use std::sync::Arc;
 
     #[derive(Clone, Debug, Deserialize, Eq, Hash, Parser, PartialEq, Serialize)]
     #[clap(about, author, version)]
@@ -37,17 +37,18 @@ pub(crate) mod context {
         pub fn new() -> Self {
             Self::parse()
         }
-        pub fn locked(&self) -> Arc<Mutex<Self>> {
-            Arc::from(Mutex::new(self.clone()))
+        pub fn as_arc(&self) -> Arc<Self> {
+            Arc::new(self.clone())
         }
         pub fn handle(&self) -> tokio::task::JoinHandle<Arc<Self>> {
-            let cli = Arc::new(self.clone());
+            let cli = self.as_arc();
             tokio::spawn(async move {
                 cli.handler().ok().unwrap();
                 cli.clone()
             })
         }
         pub fn handler(&self) -> BoxResult<&Self> {
+            tracing::info!("Success: Inputs sucessfully parsed, beginning processing...");
             if let Some(cmds) = self.command.clone() {
                 cmds.handler()?;
             }

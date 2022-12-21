@@ -10,9 +10,11 @@ pub(crate) mod settings;
 
 pub mod cli;
 pub mod server;
+pub mod states;
 
-use scsys::prelude::{BoxResult, Message, State};
+use scsys::prelude::{BoxResult, Message};
 use serde_json::json;
+use states::State;
 use std::{
     convert::From,
     sync::{Arc, Mutex},
@@ -35,11 +37,11 @@ pub type Locked<T> = Arc<Mutex<T>>;
 pub struct Application {
     pub cnf: Settings,
     pub ctx: Context,
-    pub state: Locked<State<Message>>,
+    pub state: Locked<State>,
 }
 
 impl Application {
-    pub fn new(cnf: Settings, ctx: Context, state: Locked<State<Message>>) -> Self {
+    pub fn new(cnf: Settings, ctx: Context, state: Locked<State>) -> Self {
         cnf.logger().clone().setup(None);
         tracing_subscriber::fmt::init();
         tracing::info!("Application initialized; completing setup...");
@@ -50,7 +52,7 @@ impl Application {
         tokio::sync::mpsc::channel::<T>(buffer)
     }
     /// Change the application state
-    pub async fn set_state(&mut self, state: State<Message>) -> BoxResult<&Self> {
+    pub async fn set_state(&mut self, state: State) -> BoxResult<&Self> {
         // Update the application state
         self.state = Arc::new(Mutex::new(state.clone()));
         // Post the change of state to the according channel(s)
@@ -70,7 +72,7 @@ impl Application {
         Ok(())
     }
     /// Function wrapper for returning the current application state
-    pub fn state(&self) -> &Locked<State<Message>> {
+    pub fn state(&self) -> &Locked<State> {
         &self.state
     }
     /// AIO method for running the initialized application

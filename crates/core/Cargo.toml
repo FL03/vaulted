@@ -18,7 +18,7 @@ test = true
 [build-dependencies]
 
 [dependencies]
-argon2 = "0.4.1"
+argon2 = "0.5.0"
 log = "0.4.17"
 lru = "0.8.1"
 provider-archive = "0.6.0"
